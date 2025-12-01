@@ -1,156 +1,156 @@
-# 🎣 渔夫 AI (AI Fisherman)
+# 🎣 AI Fisherman
 
-> 一个现代化的 AI 技术博客平台，采用 Apple 风格设计
+> A modern AI technology blog platform with Apple-style design
 
-[English](./README.en.md) | 中文
+English | [中文](./README.zh.md)
 
-## ✨ 特性
+## ✨ Features
 
-- 🎨 **Apple 风格 UI** - 简洁优雅的设计，流畅的动画效果
-- 🌍 **国际化支持** - 中英文双语切换
-- 🌙 **深色模式** - 支持亮色/深色/跟随系统
-- 🔍 **智能搜索** - 基于向量检索的内容搜索
-- 🤖 **AI 助手** - 集成通义千问，智能问答
-- 📝 **Markdown 编辑器** - 支持实时预览的文章编辑
-- 🔐 **OAuth 登录** - 支持 GitHub / Google 快捷登录
-- 💳 **支付集成** - 微信支付 / 支付宝
-- 📱 **响应式设计** - 完美适配移动端
+- 🎨 **Apple-style UI** - Clean, elegant design with smooth animations
+- 🌍 **Internationalization** - Chinese/English bilingual support
+- 🌙 **Dark Mode** - Light/Dark/System theme support
+- 🔍 **Smart Search** - Vector-based content retrieval
+- 🤖 **AI Assistant** - Integrated with Qwen AI for intelligent Q&A
+- 📝 **Markdown Editor** - Article editing with live preview
+- 🔐 **OAuth Login** - GitHub / Google quick login
+- 💳 **Payment Integration** - WeChat Pay / Alipay
+- 📱 **Responsive Design** - Perfect mobile adaptation
 
-## 🖼️ 预览
+## 🖼️ Preview
 
-![首页预览](./images/preview-home.png)
+![Home Preview](./images/preview-home.png)
 
-## 🚀 快速开始
+## 🚀 Quick Start
 
-### 环境要求
+### Requirements
 
 - Node.js >= 18
-- pnpm >= 8 (推荐) 或 npm >= 9
+- pnpm >= 8 (recommended) or npm >= 9
 
-### 安装
+### Installation
 
 ```bash
-# 克隆仓库
-git clone https://github.com/your-username/ai-fisherman.git
+# Clone the repository
+git clone https://github.com/anxiong2025/ai-fisherman.git
 cd ai-fisherman
 
-# 安装前端依赖
+# Install frontend dependencies
 cd vue-app
 pnpm install
 
-# 复制环境变量配置
+# Copy environment configuration
 cp .env.example .env.local
 ```
 
-### 开发
+### Development
 
 ```bash
-# 启动前端开发服务器
+# Start frontend dev server
 pnpm dev
 ```
 
-访问 http://localhost:5173
+Visit http://localhost:5173
 
-### 构建
+### Build
 
 ```bash
-# 构建生产版本
+# Build for production
 pnpm build
 
-# 预览构建结果
+# Preview build
 pnpm preview
 ```
 
-## 📦 技术栈
+## 📦 Tech Stack
 
-### 前端
+### Frontend
 
-| 技术 | 版本 | 说明 |
-|------|------|------|
-| Vue | 3.5 | 渐进式 JavaScript 框架 |
-| TypeScript | 5.9 | 类型安全 |
-| Vite | 7.x | 下一代前端构建工具 |
-| Vue Router | 4.x | 官方路由 |
-| Pinia | 3.x | 状态管理 |
-| vue-i18n | 9.x | 国际化 |
-| VueUse | 14.x | 组合式 API 工具集 |
+| Technology | Version | Description |
+|------------|---------|-------------|
+| Vue | 3.5 | Progressive JavaScript Framework |
+| TypeScript | 5.9 | Type Safety |
+| Vite | 7.x | Next Generation Frontend Tooling |
+| Vue Router | 4.x | Official Router |
+| Pinia | 3.x | State Management |
+| vue-i18n | 9.x | Internationalization |
+| VueUse | 14.x | Composition API Utilities |
 
-### 后端 (计划中)
+### Backend (Planned)
 
-| 技术 | 说明 |
-|------|------|
-| Node.js + Express | API 服务 |
-| Supabase | 数据库 + 认证 |
-| 阿里云通义千问 | AI 对话 |
-| OpenAI Embedding | 向量检索 |
+| Technology | Description |
+|------------|-------------|
+| Node.js + Express | API Service |
+| Supabase | Database + Auth |
+| Alibaba Qwen | AI Chat |
+| OpenAI Embedding | Vector Search |
 
-## 📁 项目结构
+## 📁 Project Structure
 
 ```
 ai-fisherman/
-├── vue-app/                 # 前端 Vue 应用
+├── vue-app/                 # Frontend Vue Application
 │   ├── src/
-│   │   ├── assets/         # 静态资源
-│   │   │   └── styles/     # 全局样式
-│   │   ├── components/     # 通用组件
-│   │   ├── composables/    # 组合式函数
-│   │   ├── data/           # 模拟数据
-│   │   ├── locales/        # 国际化文件
-│   │   ├── router/         # 路由配置
-│   │   ├── stores/         # Pinia 状态
-│   │   ├── types/          # TypeScript 类型
-│   │   └── views/          # 页面组件
-│   ├── public/             # 公共资源
+│   │   ├── assets/         # Static Assets
+│   │   │   └── styles/     # Global Styles
+│   │   ├── components/     # Reusable Components
+│   │   ├── composables/    # Composition Functions
+│   │   ├── data/           # Mock Data
+│   │   ├── locales/        # i18n Files
+│   │   ├── router/         # Router Config
+│   │   ├── stores/         # Pinia Stores
+│   │   ├── types/          # TypeScript Types
+│   │   └── views/          # Page Components
+│   ├── public/             # Public Assets
 │   └── package.json
-├── server/                  # 后端服务 (计划中)
-├── articles/               # 文章内容
-├── courses/                # 课程内容
-├── images/                 # 图片资源
+├── server/                  # Backend Service (Planned)
+├── articles/               # Article Content
+├── courses/                # Course Content
+├── images/                 # Image Assets
 └── README.md
 ```
 
-## 🔧 配置说明
+## 🔧 Configuration
 
-### 环境变量
+### Environment Variables
 
-在 `vue-app/.env.local` 中配置：
+Configure in `vue-app/.env.local`:
 
 ```env
-# API 配置
+# API Configuration
 VITE_API_BASE_URL=http://localhost:3000/api
 
-# OAuth 配置 (可选)
+# OAuth Configuration (Optional)
 VITE_GITHUB_CLIENT_ID=your_github_client_id
 VITE_GOOGLE_CLIENT_ID=your_google_client_id
 
-# AI 配置 (可选)
+# AI Configuration (Optional)
 VITE_QWEN_API_KEY=your_qwen_api_key
 ```
 
-## 🗺️ 路线图
+## 🗺️ Roadmap
 
-- [x] 基础页面框架
-- [x] 国际化支持
-- [x] 深色模式
-- [x] Apple 风格 UI
-- [ ] 后端 API 服务
-- [ ] OAuth 登录集成
-- [ ] 智能搜索功能
-- [ ] AI 助手集成
-- [ ] 支付功能
-- [ ] 管理后台完善
+- [x] Basic Page Framework
+- [x] Internationalization Support
+- [x] Dark Mode
+- [x] Apple-style UI
+- [ ] Backend API Service
+- [ ] OAuth Login Integration
+- [ ] Smart Search Feature
+- [ ] AI Assistant Integration
+- [ ] Payment Features
+- [ ] Admin Dashboard Enhancement
 
-## 🤝 贡献
+## 🤝 Contributing
 
-欢迎提交 Issue 和 Pull Request！
+Issues and Pull Requests are welcome!
 
-详见 [贡献指南](./CONTRIBUTING.md)
+See [Contributing Guide](./CONTRIBUTING.md) for details.
 
-## 📄 开源协议
+## 📄 License
 
 [MIT License](./LICENSE)
 
-## 🙏 致谢
+## 🙏 Acknowledgements
 
 - [Vue.js](https://vuejs.org/)
 - [Vite](https://vitejs.dev/)
@@ -158,4 +158,4 @@ VITE_QWEN_API_KEY=your_qwen_api_key
 
 ---
 
-如果这个项目对你有帮助，欢迎 Star ⭐️
+If this project helps you, please give it a Star ⭐️
