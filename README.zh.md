@@ -18,7 +18,7 @@
 
 ## 🖼️ 预览
 
-![首页预览](./images/preview-home.png)
+![首页预览](https://fisherai-1312281807.cos.ap-guangzhou.myqcloud.com/202512011836880.png)
 
 ## 🚀 快速开始
 

@@ -18,7 +18,7 @@ English | [中文](./README.zh.md)
 
 ## 🖼️ Preview
 
-![Home Preview](./images/preview-home.png)
+![Home Preview](https://fisherai-1312281807.cos.ap-guangzhou.myqcloud.com/202512011836880.png)
 
 ## 🚀 Quick Start
 
