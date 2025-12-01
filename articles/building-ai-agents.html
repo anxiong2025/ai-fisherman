@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="深入了解 AI Agent 的核心概念，手把手教你构建一个具有自主决策能力的智能助手。">
+  <title>从零构建你的第一个 AI Agent - AI Tech Blog</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎣</text></svg>">
+</head>
+
+<body>
+  <!-- 导航栏 -->
+  <nav class="navbar">
+    <div class="container navbar__inner">
+      <a href="../index.html" class="navbar__logo">🎣 渔夫 AI</a>
+      <button class="navbar__toggle" aria-label="菜单" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="navbar__menu" id="navMenu">
+        <li><a href="../index.html" class="navbar__link">首页</a></li>
+        <li><a href="../articles.html" class="navbar__link navbar__link--active">文章</a></li>
+        <li><a href="../projects.html" class="navbar__link">项目</a></li>
+        <li><a href="../courses.html" class="navbar__link">课程</a></li>
+        <li><a href="../about.html" class="navbar__link">关于</a></li>
+      </ul>
+      <!-- 登录/用户信息 -->
+      <div class="navbar__auth">
+        <div id="loginBtnContainer">
+          <button onclick="loginWithGithub()" class="btn btn--small btn--secondary">GitHub 登录</button>
+        </div>
+        <div id="userInfoContainer">
+          <img id="userAvatar" src="" alt="Avatar">
+          <span id="userName"></span>
+          <button onclick="logout()" class="btn btn--small btn--text">退出</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 文章头部 -->
+  <header class="article-header">
+    <div class="container">
+      <a href="../articles.html?category=agents" class="article-header__category">Agents 开发</a>
+      <h1 class="article-header__title">从零构建你的第一个 AI Agent</h1>
+      <div class="article-header__meta">
+        <span>2024-12-01</span>
+        <span>·</span>
+        <span>10 分钟阅读</span>
+        <span>·</span>
+        <span>Robert</span>
+      </div>
+      <div class="tags mt-md" style="justify-content: center;">
+        <a href="../articles.html?tag=Agent" class="tag">Agent</a>
+        <a href="../articles.html?tag=LangChain" class="tag">LangChain</a>
+        <a href="../articles.html?tag=Claude" class="tag">Claude</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 广告位 -->
+  <div class="container container--narrow">
+    <div class="ad-banner" id="ad-banner-1"></div>
+  </div>
+
+  <!-- 文章内容 -->
+  <article class="article-content">
+    <p>AI Agent（人工智能代理）是当前 AI 领域最激动人心的发展方向之一。与传统的问答式 AI 不同，Agent 具备自主决策、工具调用和任务规划的能力，可以独立完成复杂的多步骤任务。</p>
+
+    <h2>什么是 AI Agent？</h2>
+    <p>AI Agent 是一种能够感知环境、做出决策并采取行动的智能系统。它通常由以下几个核心组件构成：</p>
+    <ul>
+      <li><strong>大语言模型（LLM）</strong>：作为 Agent 的"大脑"，负责理解指令和生成响应</li>
+      <li><strong>记忆系统</strong>：存储对话历史和重要信息</li>
+      <li><strong>工具集</strong>：让 Agent 能够与外部世界交互</li>
+      <li><strong>规划能力</strong>：将复杂任务分解为可执行的步骤</li>
+    </ul>
+
+    <h2>环境准备</h2>
+    <p>在开始之前，我们需要准备开发环境：</p>
+    <pre><code># 创建虚拟环境
+python -m venv agent-env
+source agent-env/bin/activate
+
+# 安装依赖
+pip install langchain anthropic python-dotenv</code></pre>
+
+    <h2>构建你的第一个 Agent</h2>
+    <p>我们将使用 LangChain 框架和 Claude API 来构建一个简单的 Agent。这个 Agent 能够执行网络搜索和数学计算。</p>
+
+    <pre><code>from langchain.agents import initialize_agent, Tool
+from langchain.llms import Anthropic
+from langchain.tools import DuckDuckGoSearchRun
+
+# 初始化 LLM
+llm = Anthropic(model="claude-3-sonnet-20240229")
+
+# 定义工具
+search = DuckDuckGoSearchRun()
+tools = [
+    Tool(
+        name="Search",
+        func=search.run,
+        description="用于搜索互联网上的信息"
+    ),
+]
+
+# 创建 Agent
+agent = initialize_agent(
+    tools,
+    llm,
+    agent="zero-shot-react-description",
+    verbose=True
+)
+
+# 运行 Agent
+result = agent.run("最新的 AI 技术趋势是什么？")
+print(result)</code></pre>
+
+    <h2>添加自定义工具</h2>
+    <p>Agent 的强大之处在于你可以为其添加任意自定义工具：</p>
+    <pre><code>def calculate(expression: str) -> str:
+    """执行数学计算"""
+    try:
+        return str(eval(expression))
+    except Exception as e:
+        return f"计算错误: {e}"
+
+calculator_tool = Tool(
+    name="Calculator",
+    func=calculate,
+    description="用于执行数学计算，输入数学表达式"
+)</code></pre>
+
+    <h2>实现记忆功能</h2>
+    <p>为了让 Agent 能够记住之前的对话，我们需要添加记忆组件：</p>
+    <pre><code>from langchain.memory import ConversationBufferMemory
+
+memory = ConversationBufferMemory(
+    memory_key="chat_history",
+    return_messages=True
+)
+
+agent = initialize_agent(
+    tools,
+    llm,
+    agent="conversational-react-description",
+    memory=memory,
+    verbose=True
+)</code></pre>
+
+    <h2>最佳实践</h2>
+    <p>在构建 AI Agent 时，请牢记以下最佳实践：</p>
+    <ol>
+      <li><strong>明确工具描述</strong>：清晰的工具描述帮助 Agent 做出正确的选择</li>
+      <li><strong>错误处理</strong>：为工具添加适当的错误处理机制</li>
+      <li><strong>限制迭代次数</strong>：防止 Agent 陷入无限循环</li>
+      <li><strong>日志记录</strong>：记录 Agent 的决策过程，便于调试</li>
+    </ol>
+
+    <blockquote>
+      <p>"AI Agent 的未来不是替代人类，而是成为人类的超级助手，帮助我们完成更多创造性工作。"</p>
+    </blockquote>
+
+    <h2>总结</h2>
+    <p>通过本文，你已经了解了 AI Agent 的基本概念，并成功构建了你的第一个 Agent。这只是开始，AI Agent 的世界充满了无限可能。在接下来的文章中，我们将探索更高级的主题，如多 Agent 协作、复杂工作流编排等。
+    </p>
+
+    <p>如果你想深入学习 AI Agent 开发，欢迎查看我的 <a href="../courses.html">AI Agent 开发实战训练营</a>。</p>
+  </article>
+
+  <!-- 广告位 -->
+  <div class="container container--narrow" style="margin-top: 48px;">
+    <div class="ad-banner" id="ad-banner-2"></div>
+  </div>
+
+  <!-- 相关文章 -->
+  <section class="section">
+    <div class="container">
+      <div class="section__header">
+        <h2 class="section__title">相关文章</h2>
+      </div>
+      <div class="card-grid" style="max-width: 900px; margin: 0 auto;">
+        <a href="rag-implementation.html" class="article-card">
+          <div class="article-card__image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);"></div>
+          <div class="article-card__content">
+            <span class="article-card__category">Agents 开发</span>
+            <h3 class="article-card__title">RAG 系统实战：打造智能知识库</h3>
+            <p class="article-card__excerpt">学习如何使用 RAG 技术构建企业级知识库系统。</p>
+          </div>
+        </a>
+        <a href="multi-agent-system.html" class="article-card">
+          <div class="article-card__image" style="background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);"></div>
+          <div class="article-card__content">
+            <span class="article-card__category">Agents 开发</span>
+            <h3 class="article-card__title">多智能体系统架构设计</h3>
+            <p class="article-card__excerpt">探索多 Agent 协作的设计模式。</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 课程推广 -->
+  <section class="section" style="background: var(--color-background-secondary);">
+    <div class="container" style="max-width: 700px; text-align: center;">
+      <h2 class="section__title">想深入学习 AI Agent 开发？</h2>
+      <p class="section__subtitle mb-md">加入 AI Agent 开发实战训练营，从零到一掌握 Agent 开发全流程</p>
+      <a href="../courses.html" class="btn btn--primary btn--large">了解课程详情</a>
+    </div>
+  </section>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+        <div class="footer__section">
+          <h4>探索</h4>
+          <ul class="footer__links">
+            <li><a href="../articles.html">全部文章</a></li>
+            <li><a href="../articles.html?category=ai-news">AI 资讯</a></li>
+            <li><a href="../articles.html?category=agents">Agents 开发</a></li>
+            <li><a href="../projects.html">开源项目</a></li>
+          </ul>
+        </div>
+        <div class="footer__section">
+          <h4>学习</h4>
+          <ul class="footer__links">
+            <li><a href="../courses.html">全部课程</a></li>
+            <li><a href="../courses.html#agent-bootcamp">Agent 训练营</a></li>
+            <li><a href="../courses.html#rag-course">RAG 实战课程</a></li>
+          </ul>
+        </div>
+        <div class="footer__section">
+          <h4>关于</h4>
+          <ul class="footer__links">
+            <li><a href="../about.html">关于我</a></li>
+            <li><a href="https://github.com/anxiong2025" target="_blank">GitHub</a></li>
+            <li><a href="https://youtube.com/channel/UCwvN-yTMk67eyOKLqIEuiXQ" target="_blank">YouTube</a></li>
+          </ul>
+        </div>
+        <div class="footer__section">
+          <h4>联系</h4>
+          <ul class="footer__links">
+            <li><a href="mailto:contact@example.com">联系邮箱</a></li>
+            <li><a href="#">合作咨询</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; 2024 渔夫 AI. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+
+</html>
