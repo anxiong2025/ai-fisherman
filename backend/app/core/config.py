@@ -21,8 +21,9 @@ class Settings(BaseSettings):
     # Vector Store
     chroma_persist_dir: str = "./data/chroma"
 
-    # Embedding Model (local)
-    embedding_model: str = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+    # Embedding Settings
+    embedding_provider: str = "gemini"  # gemini or local
+    embedding_model: str = "BAAI/bge-m3"  # local model name (when provider=local)
 
     # LLM Settings
     llm_provider: str = "gemini"  # openai, anthropic, or gemini

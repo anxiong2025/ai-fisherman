@@ -56,7 +56,7 @@ export const useChatStore = defineStore('chat', () => {
 
       if (response.ok) {
         const data = await response.json()
-        addMessage('assistant', data.reply)
+        addMessage('assistant', data.response)
       } else {
         throw new Error('API error')
       }

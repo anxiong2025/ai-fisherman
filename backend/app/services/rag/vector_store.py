@@ -1,8 +1,8 @@
 from functools import lru_cache
+from pathlib import Path
 from typing import Any
 
 import chromadb
-from chromadb.config import Settings as ChromaSettings
 
 from app.core.config import get_settings
 from app.services.rag.embeddings import get_embedding_service
@@ -14,13 +14,9 @@ class VectorStore:
     COLLECTION_NAME = "site_content"
 
     def __init__(self, persist_dir: str):
-        self.client = chromadb.Client(
-            ChromaSettings(
-                chroma_db_impl="duckdb+parquet",
-                persist_directory=persist_dir,
-                anonymized_telemetry=False,
-            )
-        )
+        # 确保目录存在
+        Path(persist_dir).mkdir(parents=True, exist_ok=True)
+        self.client = chromadb.PersistentClient(path=persist_dir)
         self.embedding_service = get_embedding_service()
         self.collection = self.client.get_or_create_collection(
             name=self.COLLECTION_NAME,
