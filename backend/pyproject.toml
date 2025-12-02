@@ -1,0 +1,64 @@
+[project]
+name = "ai-fisherman-backend"
+version = "0.1.0"
+description = "AI Fisherman Backend - RAG-powered site search and chat"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi[standard]>=0.115.0",
+    "uvicorn[standard]>=0.32.0",
+    "pydantic>=2.9.0",
+    "pydantic-settings>=2.6.0",
+    # RAG & Vector Store
+    "chromadb>=0.5.0",
+    "sentence-transformers>=3.3.0",
+    # Text Processing
+    "beautifulsoup4>=4.12.0",
+    "lxml>=5.3.0",
+    # AI
+    "openai>=1.55.0",
+    "anthropic>=0.39.0",
+    "google-generativeai>=0.8.0",
+    # Utilities
+    "python-multipart>=0.0.12",
+    "httpx>=0.28.0",
+    # Database
+    "sqlalchemy>=2.0.0",
+    "aiosqlite>=0.20.0",
+    "greenlet>=3.0.0",
+    # Auth
+    "python-jose[cryptography]>=3.3.0",
+    "passlib[bcrypt]>=1.7.4",
+    "authlib>=1.3.0",
+    "itsdangerous>=2.2.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.0",
+    "pytest-asyncio>=0.24.0",
+    "ruff>=0.8.0",
+    "mypy>=1.13.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

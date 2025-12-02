@@ -2,6 +2,7 @@
 import { onMounted } from 'vue'
 import { RouterView } from 'vue-router'
 import { Navbar, Footer, AiChat } from '@/components'
+import ParticleBackground from '@/components/ParticleBackground.vue'
 import { useThemeStore, useAuthStore } from '@/stores'
 
 const themeStore = useThemeStore()
@@ -18,14 +19,11 @@ onMounted(() => {
 
 <template>
   <div id="app">
+    <ParticleBackground />
     <Navbar />
 
     <main>
-      <RouterView v-slot="{ Component }">
-        <transition name="fade" mode="out-in">
-          <component :is="Component" />
-        </transition>
-      </RouterView>
+      <RouterView />
     </main>
 
     <Footer />
@@ -40,6 +38,8 @@ onMounted(() => {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
+  z-index: 1;
 }
 
 main {

@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
-import { articles } from '@/data'
+import { useArticlesStore } from '@/stores/articles'
 
 const { t } = useI18n()
+const articlesStore = useArticlesStore()
 
 const searchQuery = ref('')
 const selectedCategory = ref('all')
@@ -13,22 +14,47 @@ const selectedStatus = ref('all')
 const categories = ['all', 'ai-news', 'agents', 'tutorial', 'tools']
 const statuses = ['all', 'published', 'draft']
 
-// Filter articles
-const filteredArticles = computed(() => {
-  return articles.filter(article => {
-    const matchesSearch = article.title.toLowerCase().includes(searchQuery.value.toLowerCase())
-    const matchesCategory = selectedCategory.value === 'all' || article.category === selectedCategory.value
-    const matchesStatus = selectedStatus.value === 'all' || article.status === selectedStatus.value
-    return matchesSearch && matchesCategory && matchesStatus
-  })
+// Fetch articles on mount
+onMounted(() => {
+  fetchArticles()
 })
 
-// Delete article (mock)
-function deleteArticle(id: string) {
-  if (confirm('Are you sure you want to delete this article?')) {
-    console.log('Delete article:', id)
-    // In production, call API
+// Refetch when filters change
+watch([selectedCategory, selectedStatus], () => {
+  fetchArticles()
+})
+
+async function fetchArticles() {
+  await articlesStore.fetchArticles({
+    category: selectedCategory.value === 'all' ? undefined : selectedCategory.value,
+    status: selectedStatus.value === 'all' ? undefined : selectedStatus.value,
+  })
+}
+
+// Filter articles by search (client-side for immediate feedback)
+const filteredArticles = computed(() => {
+  if (!searchQuery.value) {
+    return articlesStore.articles
   }
+  return articlesStore.articles.filter(article =>
+    article.title.toLowerCase().includes(searchQuery.value.toLowerCase())
+  )
+})
+
+// Delete article
+async function deleteArticle(id: string) {
+  if (confirm('Are you sure you want to delete this article?')) {
+    try {
+      await articlesStore.deleteArticle(id)
+    } catch (e) {
+      alert(e instanceof Error ? e.message : 'Failed to delete article')
+    }
+  }
+}
+
+// Format date
+function formatDate(dateStr: string) {
+  return new Date(dateStr).toLocaleDateString()
 }
 </script>
 
@@ -93,7 +119,7 @@ function deleteArticle(id: string) {
                   {{ article.status }}
                 </span>
               </td>
-              <td>{{ article.date }}</td>
+              <td>{{ formatDate(article.created_at) }}</td>
               <td>
                 <div class="action-buttons">
                   <RouterLink

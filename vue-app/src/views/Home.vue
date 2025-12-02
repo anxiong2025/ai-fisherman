@@ -219,10 +219,10 @@ onMounted(() => {
 .hero-apple__bg {
   position: absolute;
   inset: 0;
-  background: var(--color-background);
+  background: transparent;
 }
 
-/* Premium glow effects */
+/* Premium glow effects - subtle overlay that doesn't block particles */
 .hero-apple__bg::before {
   content: '';
   position: absolute;
@@ -231,7 +231,7 @@ onMounted(() => {
   transform: translateX(-50%);
   width: 140%;
   height: 600px;
-  background: radial-gradient(ellipse 50% 80% at 50% 0%, rgba(0, 113, 227, 0.12), transparent 70%);
+  background: radial-gradient(ellipse 50% 80% at 50% 0%, rgba(0, 113, 227, 0.08), transparent 70%);
   pointer-events: none;
 }
 
@@ -242,16 +242,16 @@ onMounted(() => {
   right: -10%;
   width: 500px;
   height: 500px;
-  background: radial-gradient(circle, rgba(168, 85, 247, 0.08), transparent 60%);
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.05), transparent 60%);
   pointer-events: none;
 }
 
 [data-theme="dark"] .hero-apple__bg::before {
-  background: radial-gradient(ellipse 50% 80% at 50% 0%, rgba(59, 130, 246, 0.2), transparent 70%);
+  background: radial-gradient(ellipse 50% 80% at 50% 0%, rgba(59, 130, 246, 0.15), transparent 70%);
 }
 
 [data-theme="dark"] .hero-apple__bg::after {
-  background: radial-gradient(circle, rgba(168, 85, 247, 0.15), transparent 60%);
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.1), transparent 60%);
 }
 
 .hero-apple__content {

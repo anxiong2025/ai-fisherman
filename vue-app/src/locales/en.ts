@@ -4,6 +4,7 @@ export default {
     home: 'Home',
     articles: 'Articles',
     projects: 'Projects',
+    skills: 'Skills',
     courses: 'Courses',
     about: 'About',
     admin: 'Admin',
@@ -87,6 +88,27 @@ export default {
     stars: 'Stars',
     viewGithub: 'View on GitHub',
     liveDemo: 'Live Demo'
+  },
+
+  // Skills
+  skills: {
+    title: 'Technical Skills',
+    subtitle: 'My expertise in AI, programming languages, and modern development tools',
+    experience: {
+      title: 'Experience Highlights',
+      ai: {
+        title: 'AI & LLM Development',
+        desc: 'Building production AI applications with Claude, GPT, Gemini. Expertise in RAG, prompt engineering, and AI agents.'
+      },
+      backend: {
+        title: 'Backend Engineering',
+        desc: 'High-performance APIs with FastAPI, Rust. Database design with PostgreSQL, vector databases.'
+      },
+      data: {
+        title: 'Data & ML Pipeline',
+        desc: 'Data processing, embedding generation, semantic search, and ML model deployment.'
+      }
+    }
   },
 
   // About

@@ -4,6 +4,7 @@ export default {
     home: '首页',
     articles: '文章',
     projects: '项目',
+    skills: '技能',
     courses: '课程',
     about: '关于',
     admin: '管理',
@@ -87,6 +88,27 @@ export default {
     stars: 'Stars',
     viewGithub: '查看 GitHub',
     liveDemo: '在线演示'
+  },
+
+  // Skills
+  skills: {
+    title: '技术栈',
+    subtitle: '我在 AI、编程语言和现代开发工具方面的专业技能',
+    experience: {
+      title: '经验亮点',
+      ai: {
+        title: 'AI 与大模型开发',
+        desc: '使用 Claude、GPT、Gemini 构建生产级 AI 应用。擅长 RAG、提示工程和 AI 智能体开发。'
+      },
+      backend: {
+        title: '后端工程',
+        desc: '使用 FastAPI、Rust 构建高性能 API。PostgreSQL 数据库设计，向量数据库应用。'
+      },
+      data: {
+        title: '数据与机器学习',
+        desc: '数据处理、向量嵌入生成、语义搜索和机器学习模型部署。'
+      }
+    }
   },
 
   // About

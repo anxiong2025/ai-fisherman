@@ -3,12 +3,16 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import { marked } from 'marked'
-import { articles } from '@/data'
+import { useArticlesStore } from '@/stores/articles'
 import type { Article } from '@/types'
 
 const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
+const articlesStore = useArticlesStore()
+
+// Current article ID (for editing)
+const articleId = ref<string | null>(null)
 
 // Form data
 const form = ref({
@@ -18,12 +22,14 @@ const form = ref({
   content: '',
   category: 'tutorial' as Article['category'],
   tags: '',
-  status: 'draft' as Article['status']
+  status: 'draft' as Article['status'],
+  gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
 })
 
 // State
 const isEditing = computed(() => !!route.params.id)
 const showPreview = ref(false)
+const saving = ref(false)
 
 // Preview content
 const previewContent = computed(() => {
@@ -38,21 +44,40 @@ const categories = [
   { value: 'tools', label: 'Tools' }
 ]
 
+// Gradients for random selection
+const gradients = [
+  'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+  'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+  'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+  'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+  'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
+  'linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%)',
+  'linear-gradient(135deg, #f6d365 0%, #fda085 100%)',
+]
+
 // Load article if editing
-onMounted(() => {
+onMounted(async () => {
   if (isEditing.value) {
-    const article = articles.find(a => a.id === route.params.id)
-    if (article) {
+    const slug = route.params.id as string
+    await articlesStore.fetchArticle(slug)
+
+    if (articlesStore.currentArticle) {
+      const article = articlesStore.currentArticle
+      articleId.value = article.id
       form.value = {
         title: article.title,
         slug: article.slug,
         excerpt: article.excerpt,
-        content: article.content || '# ' + article.title + '\n\n' + article.excerpt,
-        category: article.category,
+        content: article.content,
+        category: article.category as Article['category'],
         tags: article.tags.join(', '),
-        status: article.status
+        status: article.status as Article['status'],
+        gradient: article.gradient
       }
     }
+  } else {
+    // Random gradient for new articles
+    form.value.gradient = gradients[Math.floor(Math.random() * gradients.length)] ?? gradients[0]
   }
 })
 
@@ -108,10 +133,34 @@ async function saveArticle(status: 'draft' | 'published') {
     return
   }
 
-  // In production, call API
-  console.log('Saving article:', form.value)
-  alert(`Article ${status === 'published' ? 'published' : 'saved as draft'}!`)
-  router.push('/admin/articles')
+  saving.value = true
+
+  try {
+    const tags = form.value.tags.split(',').map(t => t.trim()).filter(Boolean)
+
+    const articleData = {
+      title: form.value.title,
+      slug: form.value.slug,
+      excerpt: form.value.excerpt,
+      content: form.value.content,
+      category: form.value.category,
+      tags,
+      status,
+      gradient: form.value.gradient,
+    }
+
+    if (isEditing.value && articleId.value) {
+      await articlesStore.updateArticle(articleId.value, articleData)
+    } else {
+      await articlesStore.createArticle(articleData)
+    }
+
+    router.push('/admin/articles')
+  } catch (e) {
+    alert(e instanceof Error ? e.message : 'Failed to save article')
+  } finally {
+    saving.value = false
+  }
 }
 </script>
 

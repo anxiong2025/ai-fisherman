@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import type { User } from '@/types'
+import { authApi } from '@/api'
 
-const API_BASE = '/api'
+const API_BASE = import.meta.env.VITE_API_BASE || '/api'
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null>(null)
@@ -24,14 +25,8 @@ export const useAuthStore = defineStore('auth', () => {
 
       // Verify token with backend
       try {
-        const response = await fetch(`${API_BASE}/auth/verify`, {
-          headers: {
-            'Authorization': `Bearer ${savedToken}`
-          }
-        })
-
-        if (!response.ok) {
-          // Token invalid, clear auth
+        const result = await authApi.verify(savedToken)
+        if (!result.valid) {
           logout()
         }
       } catch {
@@ -59,8 +54,9 @@ export const useAuthStore = defineStore('auth', () => {
         localStorage.setItem('auth_token', urlToken)
         localStorage.setItem('auth_user', JSON.stringify(user.value))
 
-        // Clean URL
-        window.history.replaceState({}, '', window.location.pathname)
+        // Clean URL (preserve hash for hash routing)
+        const cleanUrl = window.location.pathname + (window.location.hash || '#/')
+        window.history.replaceState({}, '', cleanUrl)
       } catch (e) {
         console.error('Failed to parse OAuth callback:', e)
       }

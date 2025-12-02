@@ -24,15 +24,50 @@ const experience = [
   }
 ]
 
-const skills = [
-  { name: 'Python', level: 95 },
-  { name: 'TypeScript', level: 90 },
-  { name: 'LangChain', level: 85 },
-  { name: 'RAG Systems', level: 85 },
-  { name: 'Claude/GPT APIs', level: 90 },
-  { name: 'Vector Databases', level: 80 },
-  { name: 'FastAPI', level: 85 },
-  { name: 'React/Vue', level: 80 }
+const skillCategories = [
+  {
+    title: 'Programming Languages',
+    titleZh: '编程语言',
+    icon: '💻',
+    skills: [
+      { name: 'Python', level: 95, icon: '🐍' },
+      { name: 'Rust', level: 85, icon: '🦀' },
+      { name: 'TypeScript', level: 85, icon: '📘' }
+    ]
+  },
+  {
+    title: 'AI & LLM',
+    titleZh: 'AI 与大模型',
+    icon: '🤖',
+    skills: [
+      { name: 'Claude', level: 95, icon: '🧠' },
+      { name: 'GPT/OpenAI', level: 90, icon: '💬' },
+      { name: 'Gemini', level: 85, icon: '✨' },
+      { name: 'LangChain', level: 88, icon: '🔗' },
+      { name: 'RAG', level: 92, icon: '📚' }
+    ]
+  },
+  {
+    title: 'Vector Databases',
+    titleZh: '向量数据库',
+    icon: '🗄️',
+    skills: [
+      { name: 'Milvus', level: 88, icon: '🔮' },
+      { name: 'ChromaDB', level: 90, icon: '🎨' },
+      { name: 'Qdrant', level: 82, icon: '⚡' }
+    ]
+  },
+  {
+    title: 'Frameworks & Tools',
+    titleZh: '框架与工具',
+    icon: '🛠️',
+    skills: [
+      { name: 'FastAPI', level: 92, icon: '⚡' },
+      { name: 'Vue.js', level: 88, icon: '💚' },
+      { name: 'Docker', level: 85, icon: '🐳' },
+      { name: 'PostgreSQL', level: 85, icon: '🐘' }
+    ]
+  }
 ]
 
 const social = [
@@ -88,14 +123,23 @@ const social = [
       <!-- Skills -->
       <div class="about-section">
         <h2>{{ t('about.skills') }}</h2>
-        <div class="skills-grid">
-          <div v-for="skill in skills" :key="skill.name" class="skill-item">
-            <div class="skill-header">
-              <span class="skill-name">{{ skill.name }}</span>
-              <span class="skill-level">{{ skill.level }}%</span>
-            </div>
-            <div class="skill-bar">
-              <div class="skill-progress" :style="{ width: `${skill.level}%` }"></div>
+        <div class="skill-categories">
+          <div v-for="category in skillCategories" :key="category.title" class="skill-category">
+            <h3 class="category-header">
+              <span class="category-icon">{{ category.icon }}</span>
+              {{ $i18n.locale === 'zh' ? category.titleZh : category.title }}
+            </h3>
+            <div class="skills-grid">
+              <div v-for="skill in category.skills" :key="skill.name" class="skill-item">
+                <div class="skill-header">
+                  <span class="skill-icon">{{ skill.icon }}</span>
+                  <span class="skill-name">{{ skill.name }}</span>
+                  <span class="skill-level">{{ skill.level }}%</span>
+                </div>
+                <div class="skill-bar">
+                  <div class="skill-progress" :style="{ width: `${skill.level}%` }"></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -224,30 +268,69 @@ const social = [
 }
 
 /* Skills */
+.skill-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.skill-category {
+  background: var(--color-background-secondary);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.category-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: var(--color-text);
+}
+
+.category-icon {
+  font-size: 24px;
+}
+
 .skills-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
 }
 
 .skill-item {
-  background: var(--color-background-secondary);
-  border-radius: var(--radius-md);
-  padding: 16px;
+  background: var(--color-card);
+  border-radius: 12px;
+  padding: 14px;
+  border: 1px solid var(--color-border);
+  transition: all 0.3s ease;
+}
+
+.skill-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .skill-header {
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 8px;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.skill-icon {
+  font-size: 20px;
 }
 
 .skill-name {
   font-weight: 500;
+  flex: 1;
 }
 
 .skill-level {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--color-text-secondary);
 }
 
@@ -262,7 +345,7 @@ const social = [
   height: 100%;
   background: linear-gradient(90deg, #667eea, #764ba2);
   border-radius: 3px;
-  transition: width 0.5s ease;
+  transition: width 0.8s ease;
 }
 
 /* Social */

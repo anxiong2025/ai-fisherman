@@ -13,6 +13,22 @@ const { t } = useI18n()
 const categoryLabel = computed(() => {
   return t(`articles.categories.${props.article.category}`)
 })
+
+// Support both old format (date) and new API format (created_at)
+const articleDate = computed(() => {
+  if (props.article.date) {
+    return props.article.date
+  }
+  if (props.article.created_at) {
+    return new Date(props.article.created_at).toLocaleDateString()
+  }
+  return ''
+})
+
+// Support both old format (readTime) and new API format (read_time)
+const readTime = computed(() => {
+  return props.article.readTime ?? props.article.read_time ?? 5
+})
 </script>
 
 <template>
@@ -29,8 +45,8 @@ const categoryLabel = computed(() => {
         </span>
       </div>
       <div class="article-card__meta">
-        <span class="article-card__date">{{ article.date }}</span>
-        <span class="article-card__read-time">{{ t('articles.readTime', { time: article.readTime }) }}</span>
+        <span class="article-card__date">{{ articleDate }}</span>
+        <span class="article-card__read-time">{{ t('articles.readTime', { time: readTime }) }}</span>
       </div>
     </div>
     <div class="article-card__arrow">

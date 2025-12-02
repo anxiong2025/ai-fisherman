@@ -15,13 +15,18 @@ export interface Article {
   title: string
   excerpt: string
   content: string
-  category: 'ai-news' | 'agents' | 'tutorial' | 'tools'
+  category: 'ai-news' | 'agents' | 'tutorial' | 'tools' | string
   tags: string[]
-  author: string
-  date: string
-  readTime: number
+  author: User | string
+  // Support both old format (date/readTime) and new API format (created_at/read_time)
+  date?: string
+  readTime?: number
+  created_at?: string
+  read_time?: number
   gradient: string
   status: 'draft' | 'published'
+  updated_at?: string
+  published_at?: string | null
 }
 
 // Course types

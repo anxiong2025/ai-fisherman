@@ -50,15 +50,10 @@ function toggleLanguage() {
 
 // Login handlers
 function handleLogin(provider: 'github' | 'google') {
-  // In dev mode, use mock login
-  if (import.meta.env.DEV) {
-    authStore.mockLogin(provider)
+  if (provider === 'github') {
+    authStore.loginWithGithub()
   } else {
-    if (provider === 'github') {
-      authStore.loginWithGithub()
-    } else {
-      authStore.loginWithGoogle()
-    }
+    authStore.loginWithGoogle()
   }
 }
 </script>

@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { ArticleCard } from '@/components'
-import { articles } from '@/data'
+import { useArticlesStore } from '@/stores/articles'
 
 const { t } = useI18n()
 const route = useRoute()
+const articlesStore = useArticlesStore()
 
 const selectedCategory = ref('all')
 const selectedTag = ref<string | null>(null)
@@ -15,13 +16,21 @@ const pageVisible = ref(false)
 const categories = ['all', 'ai-news', 'agents', 'tutorial', 'tools']
 const tags = ['LLM', 'Claude', 'GPT', 'RAG', 'LangChain', 'Prompt', 'Agent', 'Vector Database']
 
-// Filter articles
-const filteredArticles = computed(() => {
-  let result = articles
+// Fetch articles when category changes
+watch(selectedCategory, () => {
+  fetchArticles()
+})
 
-  if (selectedCategory.value !== 'all') {
-    result = result.filter(a => a.category === selectedCategory.value)
-  }
+async function fetchArticles() {
+  await articlesStore.fetchArticles({
+    category: selectedCategory.value === 'all' ? undefined : selectedCategory.value,
+    tag: selectedTag.value || undefined,
+  })
+}
+
+// Filter by tag (client-side for tags since we already have the data)
+const filteredArticles = computed(() => {
+  let result = articlesStore.articles
 
   if (selectedTag.value) {
     result = result.filter(a => a.tags.includes(selectedTag.value!))

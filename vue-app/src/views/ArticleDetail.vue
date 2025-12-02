@@ -1,32 +1,52 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, RouterLink } from 'vue-router'
-import { ArticleCard } from '@/components'
-import { getArticleBySlug, articles } from '@/data'
+import { articlesApi, type Article } from '@/api'
+import { marked } from 'marked'
 
 const { t } = useI18n()
 const route = useRoute()
 
-const slug = computed(() => route.params.slug as string)
-const article = computed(() => getArticleBySlug(slug.value))
+const article = ref<Article | null>(null)
+const loading = ref(true)
+const error = ref<string | null>(null)
 
-// Get related articles (same category)
-const relatedArticles = computed(() => {
-  if (!article.value) return []
-  return articles
-    .filter(a => a.category === article.value!.category && a.id !== article.value!.id)
-    .slice(0, 2)
+const slug = computed(() => route.params.slug as string)
+
+// Fetch article from API
+async function fetchArticle() {
+  loading.value = true
+  error.value = null
+  try {
+    article.value = await articlesApi.get(slug.value)
+  } catch (e) {
+    error.value = e instanceof Error ? e.message : 'Failed to load article'
+    article.value = null
+  } finally {
+    loading.value = false
+  }
+}
+
+// Watch for slug changes
+watch(slug, fetchArticle, { immediate: true })
+
+// Render markdown content
+const renderedContent = computed(() => {
+  if (!article.value) return ''
+  return marked(article.value.content)
 })
 
-// Highlight code blocks on mount
-onMounted(() => {
-  // Import highlight.js dynamically
-  import('highlight.js').then(hljs => {
-    document.querySelectorAll('pre code').forEach((block) => {
-      hljs.default.highlightElement(block as HTMLElement)
+// Highlight code blocks when article loads
+watch(article, async () => {
+  if (article.value) {
+    await new Promise(r => setTimeout(r, 100)) // Wait for DOM update
+    import('highlight.js').then(hljs => {
+      document.querySelectorAll('pre code').forEach((block) => {
+        hljs.default.highlightElement(block as HTMLElement)
+      })
     })
-  })
+  }
 })
 </script>
 
@@ -43,11 +63,11 @@ onMounted(() => {
         </RouterLink>
         <h1 class="article-header__title">{{ article.title }}</h1>
         <div class="article-header__meta">
-          <span>{{ article.date }}</span>
+          <span>{{ new Date(article.created_at).toLocaleDateString() }}</span>
           <span>·</span>
-          <span>{{ t('articles.readTime', { time: article.readTime }) }}</span>
+          <span>{{ t('articles.readTime', { time: article.read_time }) }}</span>
           <span>·</span>
-          <span>{{ article.author }}</span>
+          <span>{{ article.author.name }}</span>
         </div>
         <div class="tags mt-md" style="justify-content: center;">
           <RouterLink
@@ -63,49 +83,9 @@ onMounted(() => {
     </header>
 
     <!-- Article Content -->
-    <article class="article-content">
-      <p>{{ article.excerpt }}</p>
-
-      <!-- Placeholder content - in real app, this would come from article.content -->
-      <h2>Introduction</h2>
-      <p>This is a placeholder for the full article content. In a production application, this content would be loaded from a CMS or database and rendered from Markdown.</p>
-
-      <h2>Key Concepts</h2>
-      <p>The article would cover important concepts related to the topic, with code examples, diagrams, and explanations.</p>
-
-      <pre><code class="language-typescript">// Example code block
-const agent = new AIAgent({
-  model: 'claude-3-sonnet',
-  tools: [searchTool, calculatorTool],
-  memory: new ConversationMemory()
-});
-
-const result = await agent.run('What is the weather today?');
-console.log(result);</code></pre>
-
-      <h2>Conclusion</h2>
-      <p>The article would conclude with a summary of key takeaways and next steps for the reader.</p>
-
-      <blockquote>
-        <p>"AI is not about replacing humans, but augmenting human capabilities."</p>
-      </blockquote>
+    <article class="article-content container">
+      <div class="article-body" v-html="renderedContent"></div>
     </article>
-
-    <!-- Related Articles -->
-    <section v-if="relatedArticles.length > 0" class="section">
-      <div class="container">
-        <div class="section__header">
-          <h2 class="section__title">{{ t('articles.relatedArticles') }}</h2>
-        </div>
-        <div class="card-grid" style="max-width: 900px; margin: 0 auto;">
-          <ArticleCard
-            v-for="related in relatedArticles"
-            :key="related.id"
-            :article="related"
-          />
-        </div>
-      </div>
-    </section>
 
     <!-- Course CTA -->
     <section class="section" style="background: var(--color-background-secondary);">
