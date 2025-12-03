@@ -15,24 +15,37 @@
 ### 前端
 - Vue 3.5 + TypeScript 5.9 + Vite 7
 - Tailwind CSS 4 + shadcn-vue
-- Three.js 3D 渲染
-- Pinia 状态管理 + vue-i18n 国际化
+- Three.js 0.181 3D 渲染
+- Pinia 3 状态管理 + vue-i18n 9 国际化
 
 ### 后端
-- FastAPI + SQLAlchemy 2.0 + SQLite
-- ChromaDB 向量数据库
-- Sentence-Transformers / Gemini Embedding
+- Python 3.12+ + FastAPI 0.115 + SQLAlchemy 2.0 + SQLite
+- ChromaDB 0.5 向量数据库
+- Sentence-Transformers 3.3 / Gemini Embedding
 - 多 LLM 支持 (OpenAI / Anthropic / Gemini)
 
 ## 快速启动
 
 ### 后端
 
+需要先安装 [uv](https://docs.astral.sh/uv/) 包管理工具:
+
+```bash
+# macOS/Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Windows
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+然后启动后端:
+
 ```bash
 cd backend
-uv sync
-cp .env.example .env  # 配置 API Key
-uv run uvicorn app.main:app --reload --port 8000
+uv sync                       # 安装依赖并创建虚拟环境
+cp .env.example .env          # 配置 API Key
+source .venv/bin/activate     # 激活虚拟环境
+uvicorn app.main:app --reload --port 8000
 ```
 
 ### 前端
