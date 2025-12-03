@@ -58,10 +58,52 @@ npm run dev
 
 访问 http://localhost:3000
 
+## 系统架构
+
+```mermaid
+graph TB
+    subgraph Frontend["前端 Vue 3"]
+        UI[用户界面]
+        THREE[Three.js 3D 特效]
+        AUTH_UI[OAuth 登录]
+    end
+
+    subgraph Backend["后端 FastAPI"]
+        API[REST API]
+        AUTH[认证服务]
+        RAG[RAG 服务]
+        INDEXER[索引服务]
+    end
+
+    subgraph Storage["存储层"]
+        SQLITE[(SQLite)]
+        CHROMA[(ChromaDB)]
+    end
+
+    subgraph External["外部服务"]
+        OAUTH[GitHub/Google OAuth]
+        LLM[LLM API]
+        EMBED[Embedding API]
+    end
+
+    UI --> API
+    AUTH_UI --> AUTH
+    AUTH --> OAUTH
+    RAG --> CHROMA
+    RAG --> LLM
+    INDEXER --> EMBED
+    INDEXER --> CHROMA
+    API --> SQLITE
+```
+
 ## RAG 实现原理
 
-```
-用户提问 → Embedding 向量化 → ChromaDB 语义检索 → 构建上下文 → LLM 生成回答
+```mermaid
+graph LR
+    A[用户提问] --> B[Embedding 向量化]
+    B --> C[ChromaDB 语义检索]
+    C --> D[构建上下文]
+    D --> E[LLM 生成回答]
 ```
 
 1. **索引阶段**: 文章内容通过 Embedding 模型转为向量，存入 ChromaDB
