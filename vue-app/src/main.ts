@@ -4,8 +4,8 @@ import router from './router'
 import pinia from './stores'
 import i18n from './locales'
 
-// Import global styles
-import './assets/styles/main.css'
+// Import Tailwind CSS
+import './assets/styles/tailwind.css'
 
 const app = createApp(App)
 

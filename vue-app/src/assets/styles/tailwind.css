@@ -1,0 +1,295 @@
+@import "tailwindcss";
+
+/*
+ * Apple Design Style Theme
+ * Clean, spacious, elegant, premium
+ */
+
+@theme {
+  /* Colors - Light Theme Base */
+  --color-primary: #0071e3;
+  --color-primary-hover: #0077ed;
+  --color-primary-light: rgba(0, 113, 227, 0.1);
+
+  --color-success: #34c759;
+  --color-warning: #ff9500;
+  --color-danger: #ff3b30;
+
+  /* Border Radius - Apple Style */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1.125rem;
+  --radius-xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.16);
+
+  /* Typography - Apple Standard */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;
+  --font-display: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  --font-mono: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --transition-smooth: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  /* Container */
+  --container-max: 1200px;
+  --content-max: 800px;
+
+  /* Navbar */
+  --navbar-height: 52px;
+}
+
+/* CSS Variables for Theme Switching */
+:root {
+  --color-text: #1d1d1f;
+  --color-text-secondary: #86868b;
+  --color-text-tertiary: #aeaeb2;
+  --color-background: #ffffff;
+  --color-background-secondary: #f5f5f7;
+  --color-border: #d2d2d7;
+  --color-card: #ffffff;
+  --navbar-bg: rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="dark"] {
+  --color-text: #f5f5f7;
+  --color-text-secondary: #a1a1a6;
+  --color-text-tertiary: #6e6e73;
+  --color-background: #000000;
+  --color-background-secondary: #1d1d1f;
+  --color-border: #38383a;
+  --color-card: #1c1c1e;
+  --color-primary-light: rgba(0, 113, 227, 0.15);
+  --navbar-bg: rgba(29, 29, 31, 0.8);
+}
+
+/* Base Styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.47059;
+  font-weight: 400;
+  letter-spacing: -0.022em;
+  color: var(--color-text);
+  background-color: var(--color-background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  transition: background-color var(--transition-normal), color var(--transition-normal);
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Navbar Background */
+.bg-navbar {
+  background: var(--navbar-bg);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+}
+
+/* Vue Transitions */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.slide-up-enter-active,
+.slide-up-leave-active {
+  transition: all 0.3s ease;
+}
+
+.slide-up-enter-from,
+.slide-up-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* Keyframe Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes typing {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-6px); }
+}
+
+@keyframes cardFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0%, 100% { background-position: 0% center; }
+  50% { background-position: 100% center; }
+}
+
+@keyframes ctaGlow {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-5%, -5%); }
+}
+
+/* Line clamp utility */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Container */
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.container--narrow {
+  max-width: var(--content-max);
+}
+
+/* Hero Section */
+.hero {
+  padding: 100px 0 60px;
+  text-align: center;
+}
+
+.hero__title {
+  font-size: clamp(36px, 6vw, 56px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 16px;
+  color: var(--color-text);
+}
+
+.hero__subtitle {
+  font-size: 20px;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Section */
+.section {
+  padding: 80px 0;
+}
+
+.section__title {
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+  color: var(--color-text);
+}
+
+.section__subtitle {
+  font-size: 18px;
+  color: var(--color-text-secondary);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* Card Grid */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 24px;
+}
+
+/* Text utilities */
+.text-center {
+  text-align: center;
+}
+
+.mb-md {
+  margin-bottom: 24px;
+}
+
+/* Button */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 100px;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.btn--primary {
+  background: var(--color-primary);
+  color: white;
+}
+
+.btn--primary:hover {
+  background: var(--color-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 113, 227, 0.25);
+  text-decoration: none;
+}
+
+.btn--large {
+  padding: 16px 32px;
+  font-size: 17px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero {
+    padding: 80px 0 40px;
+  }
+
+  .section {
+    padding: 60px 0;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}

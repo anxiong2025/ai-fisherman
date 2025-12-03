@@ -77,7 +77,7 @@ onMounted(async () => {
     }
   } else {
     // Random gradient for new articles
-    form.value.gradient = gradients[Math.floor(Math.random() * gradients.length)] ?? gradients[0]
+    form.value.gradient = gradients[Math.floor(Math.random() * gradients.length)] ?? gradients[0] ?? ''
   }
 })
 
@@ -294,6 +294,8 @@ async function saveArticle(status: 'draft' | 'published') {
   padding: 40px 0;
   min-height: calc(100vh - 52px);
   background: var(--color-background-secondary);
+  position: relative;
+  z-index: 1;
 }
 
 .editor-header {

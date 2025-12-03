@@ -132,6 +132,8 @@ function saveCourse() {
   padding: 40px 0;
   min-height: calc(100vh - 52px);
   background: var(--color-background-secondary);
+  position: relative;
+  z-index: 1;
 }
 
 .admin-header {

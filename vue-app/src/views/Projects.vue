@@ -7,13 +7,14 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <!-- Hero -->
-  <section class="hero">
-    <div class="container">
-      <h1 class="hero__title">{{ t('projects.title') }}</h1>
-      <p class="hero__subtitle">{{ t('projects.subtitle') }}</p>
-    </div>
-  </section>
+  <div class="projects-page">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container">
+        <h1 class="hero__title">{{ t('projects.title') }}</h1>
+        <p class="hero__subtitle">{{ t('projects.subtitle') }}</p>
+      </div>
+    </section>
 
   <!-- Projects Grid -->
   <section class="section">
@@ -45,4 +46,14 @@ const { t } = useI18n()
       </a>
     </div>
   </section>
+  </div>
 </template>
+
+<style scoped>
+.projects-page {
+  min-height: 100vh;
+  background: var(--color-background);
+  position: relative;
+  z-index: 1;
+}
+</style>

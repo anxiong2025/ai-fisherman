@@ -78,14 +78,15 @@ const social = [
 </script>
 
 <template>
-  <!-- Hero -->
-  <section class="hero">
-    <div class="container">
-      <div class="about-avatar">👨‍💻</div>
-      <h1 class="hero__title">Robert</h1>
-      <p class="hero__subtitle">{{ t('about.subtitle') }}</p>
-    </div>
-  </section>
+  <div class="about-page">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container">
+        <div class="about-avatar">👨‍💻</div>
+        <h1 class="hero__title">Robert</h1>
+        <p class="hero__subtitle">{{ t('about.subtitle') }}</p>
+      </div>
+    </section>
 
   <!-- About Content -->
   <section class="section">
@@ -176,9 +177,17 @@ const social = [
       </div>
     </div>
   </section>
+  </div>
 </template>
 
 <style scoped>
+.about-page {
+  min-height: 100vh;
+  background: var(--color-background);
+  position: relative;
+  z-index: 1;
+}
+
 .about-avatar {
   width: 120px;
   height: 120px;
