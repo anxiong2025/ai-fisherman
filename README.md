@@ -1,6 +1,6 @@
 # AI Fisherman
 
-![Preview](./preview.png)
+![Preview](https://fisherai-1312281807.cos.ap-guangzhou.myqcloud.com/CleanShot%202025-12-03%20at%2023.46.34.gif)
 
 ## 核心亮点
 
