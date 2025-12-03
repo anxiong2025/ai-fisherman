@@ -1,7 +1,5 @@
 # AI Fisherman
 
-> AI 技术博客平台，Apple 风格设计
-
 ![Preview](./preview.png)
 
 ## 核心亮点
