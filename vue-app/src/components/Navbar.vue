@@ -20,19 +20,19 @@ const githubStars = ref<number | null>(null)
 
 async function fetchGithubStars() {
   try {
-    // Use ungh.cc - a free GitHub API proxy with no rate limit
-    const response = await fetch('https://ungh.cc/repos/anxiong2025/ai-fisherman')
+    // Use GitHub API directly for real-time data
+    const response = await fetch('https://api.github.com/repos/anxiong2025/ai-fisherman')
     if (response.ok) {
       const data = await response.json()
-      githubStars.value = data.repo.stars
+      githubStars.value = data.stargazers_count
     }
   } catch {
-    // Fallback: try GitHub API directly
+    // Fallback: use ungh.cc proxy (may have cache delay)
     try {
-      const response = await fetch('https://api.github.com/repos/anxiong2025/ai-fisherman')
+      const response = await fetch('https://ungh.cc/repos/anxiong2025/ai-fisherman')
       if (response.ok) {
         const data = await response.json()
-        githubStars.value = data.stargazers_count
+        githubStars.value = data.repo.stars
       }
     } catch {
       // Silently fail

@@ -170,7 +170,7 @@ export default {
     sort: 'Sort',
     viewMore: 'View More',
     backToTop: 'Back to Top',
-    copyright: '© 2024 AI Fisherman. All rights reserved.'
+    copyright: '© 2025 AI Fisherman. All rights reserved.'
   },
 
   // Theme

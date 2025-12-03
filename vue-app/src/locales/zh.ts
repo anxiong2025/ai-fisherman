@@ -170,7 +170,7 @@ export default {
     sort: '排序',
     viewMore: '查看更多',
     backToTop: '返回顶部',
-    copyright: '© 2024 渔夫 AI. 保留所有权利。'
+    copyright: '© 2025 渔夫 AI. 保留所有权利。'
   },
 
   // Theme
