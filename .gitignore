@@ -72,3 +72,4 @@ service-account.json
 
 # Debug
 .debug/
+.vscode/
