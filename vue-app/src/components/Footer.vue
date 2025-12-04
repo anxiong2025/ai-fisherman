@@ -8,7 +8,7 @@ const { t } = useI18n()
 
 <template>
   <footer class="bg-[var(--color-background-secondary)] py-12 mt-20">
-    <div class="max-w-[1200px] mx-auto px-6">
+    <div class="max-w-5xl mx-auto px-6">
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
         <!-- Explore -->
         <div>

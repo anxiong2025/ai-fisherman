@@ -130,11 +130,19 @@ const recentOrders = [
 
 <style scoped>
 .admin-dashboard {
-  padding: 40px 0;
+  padding: 40px 24px;
   min-height: calc(100vh - 52px);
-  background: var(--color-background-secondary);
+  background: var(--color-background);
   position: relative;
   z-index: 1;
+}
+
+.admin-dashboard > .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: var(--color-background-secondary);
+  border-radius: 24px;
+  padding: 40px;
 }
 
 .admin-header {

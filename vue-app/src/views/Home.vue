@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
 import { ArticleCard, ProjectCard } from '@/components'
+import AnimatedCounter from '@/components/ui/AnimatedCounter.vue'
 import { getFeaturedArticles, getFeaturedProjects, courses } from '@/data'
 import { ArrowRight, Check } from 'lucide-vue-next'
 
@@ -22,45 +23,6 @@ const stats = [
   { target: 50, suffix: '+', label: 'Articles' },
   { target: 10, suffix: '+', label: 'Projects' }
 ]
-const counters = ref([0, 0, 0])
-const statsAnimated = ref(false)
-
-function animateCounter(index: number, target: number, duration: number = 2000) {
-  const startTime = performance.now()
-  const startValue = 0
-
-  function easeOutExpo(t: number): number {
-    return t === 1 ? 1 : 1 - Math.pow(2, -10 * t)
-  }
-
-  function update(currentTime: number) {
-    const elapsed = currentTime - startTime
-    const progress = Math.min(elapsed / duration, 1)
-    const easedProgress = easeOutExpo(progress)
-
-    counters.value[index] = Math.floor(startValue + (target - startValue) * easedProgress)
-
-    if (progress < 1) {
-      requestAnimationFrame(update)
-    } else {
-      counters.value[index] = target
-    }
-  }
-
-  requestAnimationFrame(update)
-}
-
-// Watch for hero visibility to trigger counter animation
-watch(heroVisible, (visible) => {
-  if (visible && !statsAnimated.value) {
-    statsAnimated.value = true
-    stats.forEach((stat, index) => {
-      setTimeout(() => {
-        animateCounter(index, stat.target, 2000)
-      }, index * 200)
-    })
-  }
-})
 
 onMounted(() => {
   setTimeout(() => {
@@ -115,7 +77,13 @@ onMounted(() => {
 
         <div class="hero-stats">
           <div v-for="(stat, index) in stats" :key="stat.label" class="stat-item">
-            <span class="stat-number">{{ (counters[index] ?? 0).toLocaleString() }}{{ stat.suffix }}</span>
+            <span class="stat-number">
+              <AnimatedCounter 
+                :value="stat.target" 
+                :delay="index * 200 + 200"
+                :format="(v) => Math.floor(v).toLocaleString() + stat.suffix"
+              />
+            </span>
             <span class="stat-label">{{ stat.label }}</span>
           </div>
         </div>
@@ -319,6 +287,31 @@ onMounted(() => {
 
 .hero-main {
   display: block;
+  background: linear-gradient(
+    90deg,
+    #667eea 0%,
+    #764ba2 25%,
+    #f093fb 50%,
+    #667eea 75%,
+    #764ba2 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientFlow 4s ease infinite;
+}
+
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
+  100% {
+    background-position: 0% center;
+  }
 }
 
 .hero-tagline {
@@ -437,7 +430,24 @@ onMounted(() => {
 }
 
 .content-section.bg-secondary {
-  background: var(--color-background-secondary);
+  background: linear-gradient(135deg, #667eea 0%, #00d4ff 100%);
+  max-width: 1200px;
+  margin: 40px auto;
+  border-radius: 24px;
+}
+
+.content-section.bg-secondary .section-title,
+.content-section.bg-secondary .section-badge,
+.content-section.bg-secondary .section-description {
+  color: white;
+}
+
+.content-section.bg-secondary .section-badge {
+  opacity: 0.9;
+}
+
+.content-section.bg-secondary .section-description {
+  opacity: 0.9;
 }
 
 .section-header {
@@ -634,11 +644,14 @@ onMounted(() => {
 /* CTA Section */
 .cta-section {
   padding: 100px 0;
-  background: var(--color-background-secondary);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   text-align: center;
   opacity: 0;
   transform: translateY(30px);
   transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  max-width: 1200px;
+  margin: 0 auto 40px;
+  border-radius: 24px;
 }
 
 .cta-section.visible {
@@ -651,16 +664,26 @@ onMounted(() => {
   font-weight: 700;
   letter-spacing: -0.02em;
   margin-bottom: 16px;
-  color: var(--color-text);
+  color: white;
 }
 
 .cta-subtitle {
   font-size: 18px;
-  color: var(--color-text-secondary);
+  color: rgba(255, 255, 255, 0.9);
   margin-bottom: 32px;
   max-width: 500px;
   margin-left: auto;
   margin-right: auto;
+}
+
+.cta-section .btn-primary {
+  background: white;
+  color: #667eea;
+}
+
+.cta-section .btn-primary:hover {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
 /* Responsive */

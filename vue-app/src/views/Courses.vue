@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/stores'
 import { courses } from '@/data'
+import AnimatedCounter from '@/components/ui/AnimatedCounter.vue'
 
 const { t } = useI18n()
 const authStore = useAuthStore()
@@ -30,7 +31,7 @@ onMounted(() => {
   <div class="courses-page">
     <!-- Hero Section -->
     <section class="courses-hero" :class="{ visible: pageVisible }">
-      <div class="container">
+      <div class="container container--narrow">
         <div class="courses-hero__badge">
           <span class="badge-icon">🎓</span>
           Premium AI Education
@@ -40,17 +41,23 @@ onMounted(() => {
 
         <div class="courses-hero__stats">
           <div class="stat-item">
-            <span class="stat-number">2,000+</span>
+            <span class="stat-number">
+              <AnimatedCounter :value="2000" :delay="0" :format="(v) => v.toLocaleString() + '+'" />
+            </span>
             <span class="stat-label">Students</span>
           </div>
           <div class="stat-divider"></div>
           <div class="stat-item">
-            <span class="stat-number">50+</span>
+            <span class="stat-number">
+              <AnimatedCounter :value="50" :delay="200" :format="(v) => v + '+'" />
+            </span>
             <span class="stat-label">Hours Content</span>
           </div>
           <div class="stat-divider"></div>
           <div class="stat-item">
-            <span class="stat-number">4.9/5</span>
+            <span class="stat-number">
+              <AnimatedCounter :value="4.9" :delay="400" :format="(v) => v.toFixed(1) + '/5'" />
+            </span>
             <span class="stat-label">Rating</span>
           </div>
         </div>
@@ -261,7 +268,7 @@ onMounted(() => {
 
     <!-- CTA Section -->
     <section class="cta-section" :class="{ visible: pageVisible }">
-      <div class="container">
+      <div class="container container--narrow">
         <div class="cta-content">
           <h2 class="cta-title">{{ t('courses.cta.title') }}</h2>
           <p class="cta-subtitle">{{ t('courses.cta.subtitle') }}</p>
@@ -294,6 +301,9 @@ onMounted(() => {
   opacity: 0;
   transform: translateY(30px);
   transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  max-width: 1200px;
+  margin: 24px auto 0;
+  border-radius: 24px;
 }
 
 .courses-hero.visible {
@@ -312,7 +322,7 @@ onMounted(() => {
               radial-gradient(circle at 70% 80%, rgba(118, 75, 162, 0.15) 0%, transparent 50%);
 }
 
-.courses-hero .container {
+.courses-hero .container--narrow {
   position: relative;
   z-index: 1;
 }
@@ -359,13 +369,14 @@ onMounted(() => {
   display: inline-flex;
   align-items: center;
   gap: 32px;
-  padding: 20px 40px;
+  padding: 16px 32px;
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px;
 }
+
 
 .stat-item {
   display: flex;
@@ -857,6 +868,9 @@ onMounted(() => {
   opacity: 0;
   transform: translateY(30px);
   transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.6s;
+  max-width: 1200px;
+  margin: 0 auto 40px;
+  border-radius: 24px;
 }
 
 .cta-section.visible {
