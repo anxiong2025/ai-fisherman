@@ -278,15 +278,13 @@ onMounted(() => {
 }
 
 .hero-prefix {
-  display: block;
-  font-size: 0.4em;
+  font-size: 0.5em;
   font-weight: 400;
   color: var(--color-text-secondary);
-  margin-bottom: 8px;
+  margin-right: 0.2em;
 }
 
 .hero-main {
-  display: block;
   background: linear-gradient(
     90deg,
     #667eea 0%,

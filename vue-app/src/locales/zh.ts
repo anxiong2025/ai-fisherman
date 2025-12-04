@@ -17,7 +17,7 @@ export default {
   // Home page
   home: {
     hero: {
-      prefix: '跟',
+      prefix: '与',
       title: '渔夫',
       subtitle: '一起出海，驾驭 AI 浪潮！',
       description: '探索 AI 前沿技术，掌握 Agent 开发技能，成为 AI 时代的创造者',

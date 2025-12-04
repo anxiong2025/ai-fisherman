@@ -4,10 +4,16 @@ import type { ChatMessage } from '@/types'
 
 const API_BASE = '/api'
 
+// Rate limit config
+const RATE_LIMIT = 10 // max requests
+const RATE_WINDOW = 60 * 1000 // 1 minute in ms
+
 export const useChatStore = defineStore('chat', () => {
   const messages = ref<ChatMessage[]>([])
   const isOpen = ref(false)
   const isLoading = ref(false)
+  const requestTimestamps = ref<number[]>([])
+  const rateLimitRemaining = ref(RATE_LIMIT)
 
   // Toggle chat window
   function toggle() {
@@ -34,12 +40,38 @@ export const useChatStore = defineStore('chat', () => {
     })
   }
 
+  // Check rate limit
+  function checkRateLimit(): boolean {
+    const now = Date.now()
+    // Remove expired timestamps
+    requestTimestamps.value = requestTimestamps.value.filter(
+      ts => now - ts < RATE_WINDOW
+    )
+    // Update remaining count
+    rateLimitRemaining.value = RATE_LIMIT - requestTimestamps.value.length
+    return requestTimestamps.value.length < RATE_LIMIT
+  }
+
+  // Record a request
+  function recordRequest() {
+    requestTimestamps.value.push(Date.now())
+    rateLimitRemaining.value = RATE_LIMIT - requestTimestamps.value.length
+  }
+
   // Send message
   async function sendMessage(content: string) {
     if (!content.trim() || isLoading.value) return
 
+    // Check rate limit before sending
+    if (!checkRateLimit()) {
+      addMessage('user', content.trim())
+      addMessage('assistant', '⚠️ 请求过于频繁，请稍后再试。每分钟最多 10 次请求。\n\n⚠️ Too many requests. Please wait a moment. Max 10 requests per minute.')
+      return
+    }
+
     // Add user message
     addMessage('user', content.trim())
+    recordRequest()
     isLoading.value = true
 
     try {
@@ -113,6 +145,7 @@ export const useChatStore = defineStore('chat', () => {
     messages,
     isOpen,
     isLoading,
+    rateLimitRemaining,
     toggle,
     close,
     clear,
